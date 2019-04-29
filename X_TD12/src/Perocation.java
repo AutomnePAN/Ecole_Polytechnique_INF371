@@ -4,8 +4,6 @@ public class Perocation {
 	static int size = 10;
 	  static int length = size * size;
 	  static boolean[] grid = new boolean[length];
-	
-	  
 	  
 //	  public static void print_co(int n)
 //	  {
@@ -123,8 +121,7 @@ public class Perocation {
 		 
 		  
 	  }
-	  
-	  
+	    
 	  public static boolean is_percolation(int n)
 	  {
 		  boolean[] seen = new boolean[length];
@@ -164,7 +161,6 @@ public class Perocation {
 		  return true;
 	  }
 	  
-	  
 	  public static double percolation()
 	  {
 		  init();
@@ -192,24 +188,231 @@ public class Perocation {
 		  return res;
 		  
 	  }
+
+	  public static boolean is_percolation1(int n)
+	  {
+		  for (int i = 0; i < size; i++)
+		  {
+			  for (int j = 0; j < size; j++)
+			  {
+				  if (Unionfind.find(i) == Unionfind.find(size*size - size + j))
+					  return true;
+			  }
+		  }
+		  return false;
+	  }
 	  
+	  public static void propagate_union(int n)
+	  {
+		  if(n == 0)
+		  {
+			  if (grid[1] == true)
+			  {
+				  Unionfind.Union(1, 0);
+				 // propagate_union(1);
+			  }
+			  if (grid[size] == true)
+			  {
+				  Unionfind.Union(size, 0);
+//				  propagate_union(size);
+			  }
+			  return;
+		  }
+		  if(n == size - 1)
+		  {
+			  if (grid[size - 2] == true)
+			  {
+				  Unionfind.Union(size - 1, 0);
+//				  propagate_union(size - 1);
+			  }
+			  if (grid[2*size - 1] == true)
+			  {
+				  Unionfind.Union(2*size - 1, size - 1);
+//				  propagate_union(2*size - 1);
+			  }
+			  return;
+		  }
+		  if(n == size*size - size)
+		  {
+			  if (grid[size * size - 2* size] == true)
+			  {
+				  Unionfind.Union(size * size - 2* size, size * size - size);
+//				  propagate_union(size * size - 2 * size);
+			  }
+			  if (grid[size*size - size + 1] == true)
+			  {
+				  Unionfind.Union(size * size - size + 1, size * size - size);
+//				  propagate_union(size * size - size + 1);
+			  }
+			  return;
+		  }
+		  if(n == size * size - 1)
+		  {
+			  if (grid[size * size - size - 1] == true)
+			  {
+				  Unionfind.Union(size * size - size - 1, size * size - 1);
+//				  propagate_union(size * size - size - 1);
+			  }
+			  if (grid[size * size - 2] == true)
+			  {
+				  Unionfind.Union(size * size - 2, size * size - 1);
+//				  propagate_union(size * size - 2);
+			  }
+			  return;
+		  }
+		  if ( n < size)
+		  {
+			  //System.out.println("Arrived at the top");
+			  if(grid[n-1] == true)
+			  {
+				  Unionfind.Union(n-1 ,n);
+//				  propagate_union(n-1);
+			  }
+			  if(grid[n+1] == true)
+			  {
+				  Unionfind.Union(n+1 ,n);
+//				  propagate_union(n + 1);
+			  }
+			  if(grid[n+size] == true)
+			  {
+				  Unionfind.Union(n+ size ,n);
+//				  propagate_union(n + size);
+			  }
+			  return;
+		  }
+		  if ( n > length - size - 1 )
+		  {
+			  //System.out.println("Arrived at the bottom");
+			  if(grid[n-1] == true)
+			  {
+				  Unionfind.Union(n-1 ,n);
+//				  propagate_union(n-1);
+			  }
+			  if(grid[n+1] == true)
+			  {
+				  Unionfind.Union(n+1 ,n);
+//				  propagate_union(n + 1);
+			  }
+			  if(grid[n-size] == true)
+			  {
+				  Unionfind.Union(n-size ,n);
+//				  propagate_union(n-size);
+			  }
+			  return;
+		  }
+		  
+		  if ( n % size == 0)
+		  {
+			  //System.out.println("Arrived at the left bord");
+			  if(grid[n-size] == true)
+			  {
+				  Unionfind.Union(n-size ,n);
+//				  propagate_union(n-size);
+			  }
+			  if(grid[n+1] == true)
+			  {
+				  Unionfind.Union(n+1 ,n);
+//				  propagate_union(n + 1);
+			  }
+			  if(grid[n+size] == true)
+			  {
+				  Unionfind.Union(n+ size ,n);
+//				  propagate_union(n + size);
+			  }
+			  return;
+		  }
+		  
+		  if ( (n+1) % size == 0)
+		  { 
+			//System.out.println("Arrived at the right bord");
+			  if(grid[n-1] == true)
+			  {
+				  Unionfind.Union(n-1 ,n);
+//				  propagate_union(n-1);
+			  }
+			  if(grid[n - size] == true)
+			  {
+				  Unionfind.Union(n-size ,n);
+//				  propagate_union(n-size);
+			  }
+			  if(grid[n+size] == true)
+			  {
+				  Unionfind.Union(n+ size ,n);
+//				  propagate_union(n + size);
+			  }
+			  return;
+		  }
+		  if(grid[n-1] == true)
+		  {
+			  Unionfind.Union(n-1 ,n);
+//			  propagate_union(n-1);
+		  }
+		  if(grid[n+1] == true)
+		  {
+//			  Unionfind.Union(n+1 ,n);
+			  propagate_union(n + 1);
+		  }
+		  if(grid[n+size] == true)
+		  {
+			  Unionfind.Union(n+ size ,n);
+//			  propagate_union(n + size);
+		  }
+		  if(grid[n-size] == true)
+		  {
+			  Unionfind.Union(n-size, n);
+//			  propagate_union(n + size);
+		  }
+		  return;
+		  
+	  }
+	  
+	  public static double percolation1()
+	  {
+		  init();
+		  Unionfind.init();
+		  Unionfind.init_hauteur();
+		  
+		  int r = randow_shadow();
+		  while(is_percolation1(r) == false)
+		  {
+			  propagate_union(r);
+			  r = randow_shadow();
+//			  Unionfind.print();
+//			  Unionfind.print_hauteur();
+//			  print();
+		  }
+//		  Unionfind.print();
+//		  print();
+		  int counter = 0;
+		  
+		  for(int i = 0; i < length; i++)
+		  {
+			  if (grid[i] == true)
+			  {
+				  counter++;
+			  }
+		  }
+		  
+		  double res = (double) counter / length;
+		  
+		  return res;
+		  
+	  }
 	  
 	  public static double montecarlo(int n)
 	  {
 		  double Sum = 0.0;
 		  for (int i = 0; i < n; i++)
 		  {
-			  Sum += percolation();
+			  Sum += percolation1();
 		  }
 		  return Sum/n;
 	  }
 
 	  public static void main(String[] args) {
 		
-		  int n = 100000;
-		  System.out.printf("%.3f",montecarlo(n));
+		  System.out.println(montecarlo(100000));
 		  
-
 	  } // fin de la fonction principale
 
 }
