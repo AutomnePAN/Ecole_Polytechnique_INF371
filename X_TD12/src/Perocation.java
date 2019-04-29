@@ -1,18 +1,19 @@
 
 public class Perocation {
-	
-	  static int size = 10;
+
+	static int size = 10;
 	  static int length = size * size;
 	  static boolean[] grid = new boolean[length];
 	
 	  
-	  public static void print_co(int n)
-	  {
-		  int a, b;
-		  a = n % size;
-		  b = n / size;
-		  System.out.println("( " + b + ", " +a+ " )");
-	  }
+	  
+//	  public static void print_co(int n)
+//	  {
+//		  int a, b;
+//		  a = n % size;
+//		  b = n / size;
+//		  System.out.println("( " + b + ", " +a+ " )");
+//	  }
 	  
 	  public static void init()
 	  {
@@ -22,13 +23,13 @@ public class Perocation {
 		  }
 	  }
 
-	  public static void print(boolean[] g)
+	  public static void print()
 	  {
 		  for(int i = 0 ; i < size; i++)
 		  {
 			  for(int j = 0; j < size; j++)
 			  {
-				  if (g[i*size + j] == true)
+				  if (grid[i*size + j] == true)
 				  {
 					  System.out.print("-");
 				  }
@@ -41,11 +42,12 @@ public class Perocation {
 		  }
 	  }
 	  
-	  public static void randow_shadow()
+	  public static int randow_shadow()
 	  {
 		  int Ran = (int)(length * Math.random() );
-		  System.out.println(Ran);
+		  //System.out.println(Ran);
 		  grid[Ran] = true;
+		  return Ran;
 	  }
 	  
 	  public static int detect_path(boolean[] seen, int n , boolean up)
@@ -55,31 +57,31 @@ public class Perocation {
 		  if (up == false)
 			 dir = -1;
 		  
-		  if ( n < size)
+		  if ( n < size && dir == -1 )
 		  {
-			  System.out.println("Arrived at the top");
+			  //System.out.println("Arrived at the top");
 			  return (n);
 		  }
-		  if ( n > length - size - 1)
+		  if ( n > length - size - 1 && dir == 1)
 		  {
-			  System.out.println("Arrived at the bottom");
+			  //System.out.println("Arrived at the bottom");
 			  return (n);
 		  }
 		  
 		  if ( n % size == 0)
 		  {
-			System.out.println("Arrived at the left border") ;
+			//System.out.println("Arrived at the left border") ;
 			if (grid[n + dir * size] == true && seen[n+ dir *size] == false)
 			{
-				System.out.println("Go up(down)");
+				//System.out.println("Go up(down)");
 				return (n + dir * size);
 			}		
 			if (grid[n + 1] == true && seen[n+1] == false)
 			{
-				System.out.println("Go right");
+				//System.out.println("Go right");
 				return (n + 1);
 			}
-			System.out.println("Stacked");
+			//System.out.println("Stacked");
 			return -1;
 			
 		  }
@@ -88,35 +90,35 @@ public class Perocation {
 		  { 
 			if (grid[n + dir * size] == true && seen [n + dir*size] == false)
 				{
-					System.out.println("Go up(down)");
+					//System.out.println("Go up(down)");
 					return (n + dir*size);
 				}
-			System.out.println("Arrived at the right border");  
+			//System.out.println("Arrived at the right border");  
 			if (grid[n - 1] == true && seen[n-1] == false)
 			{
-				System.out.println("Go left");
+				//System.out.println("Go left");
 				return (n - 1);
 			}
-			System.out.println("Stacked");
+			//System.out.println("Stacked");
 			return -1;
 		  }
 		  if (grid[n + dir *size] == true && seen[n + dir*size] == false)
 		  {
-				System.out.println("Go uo(down)");
+				//System.out.println("Go up(down)");
 				return (n + dir*size);
 			}
 
 		  if (grid[n - 1] == true && seen[n-1] == false)
 		  {
-				System.out.println("Go left");
+				//System.out.println("Go left");
 				return (n - 1);
 			}
 		  if (grid[n+1] == true && seen[n+1] == false)
 		  {
-				System.out.println("Go right");
+				//System.out.println("Go right");
 				return (n + 1);
 			}
-		  		  System.out.println("Stacked"); 
+		  		  //System.out.println("Stacked"); 
 		return -1;
 		 
 		  
@@ -137,7 +139,7 @@ public class Perocation {
 		  {
 			  seen[next_step] = true;
 			  next_step = detect_path(seen, next_step, dir);
-			  print_co(next_step);
+			  //print_co(next_step);
 			  if (next_step == -1)
 			  {
 				  return false;
@@ -145,13 +147,14 @@ public class Perocation {
 		  }
 		  
 		  //Detection below
-		  dir = true;
 		  next_step = n;
+		  dir = true;
 		  while (next_step < length - size)
 		  {
+			  //System.out.println(2);
 			  seen[next_step] = true;
+			  //print_co(next_step);
 			  next_step = detect_path(seen, next_step, dir);
-			  print_co(next_step);
 			  if (next_step == -1)
 			  {
 				  return false;
@@ -160,22 +163,53 @@ public class Perocation {
 		  
 		  return true;
 	  }
+	  
+	  
+	  public static double percolation()
+	  {
+		  init();
+		  //print();
+		  
+		  int r = randow_shadow();
+		  while(is_percolation(r) == false)
+		  {
+			  r = randow_shadow();
+			  //print();
+		  }
+		  
+		  int counter = 0 ;
+		  
+		  for(int i = 0; i < length; i++)
+		  {
+			  if (grid[i] == true)
+			  {
+				  counter++;
+			  }
+		  }
+		  
+		  double res = (double) counter / length;
+		  
+		  return res;
+		  
+	  }
+	  
+	  
+	  public static double montecarlo(int n)
+	  {
+		  double Sum = 0.0;
+		  for (int i = 0; i < n; i++)
+		  {
+			  Sum += percolation();
+		  }
+		  return Sum/n;
+	  }
 
 	  public static void main(String[] args) {
 		
-		  init();
-		  print(grid);
-		  for(int i = 0; i< 200 ; i++)
-		  {
-			  randow_shadow();
-		  }
-		  print(grid);
-		  boolean test = is_percolation(45);
-		  System.out.print(test);
-
+		  int n = 100000;
+		  System.out.printf("%.3f",montecarlo(n));
 		  
 
 	  } // fin de la fonction principale
 
-	
 }
